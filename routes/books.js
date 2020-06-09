@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     { title: 'The Bible' },
     { title: 'The Quran' }
   ]
-  res.json({books: [{books: booksCollection}]});
+  res.json({ books: booksCollection })
 });
 
 module.exports = router;
