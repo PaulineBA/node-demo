@@ -5,6 +5,49 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Mocha - All",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--timeout",
+        "999999",
+        "--colors",
+        "${workspaceFolder}/**/*.spec.js"
+      ],
+      "env":{
+        "NODE_ENV": "test",
+        "NODE_NO_WARMINGS": "1"
+      },
+      "console":"integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha - Current File",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "args": [
+        "--timeout",
+        "999999",
+        "--colors",
+        "${file}"
+      ],
+      "env":{
+        "NODE_ENV": "test",
+        "NODE_NO_WARMINGS": "1"
+      },
+      "console":"integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Launch in Chrome",
       "skipFiles": [
         "<node_internals>/**"
