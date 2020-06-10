@@ -1,6 +1,6 @@
 const app = require('../app')
 const supertest = require('supertest')
-const expect = require('chai').expect
+const { expect, factory } = require('./test_helper')
 const jsonResponse = require('./jsonResponse')
 
 let server, request, response
@@ -13,9 +13,19 @@ before((done) => {
 after((done) => {
   server.close(done)
 })
+beforeEach(async () => {
+  await factory.createMany('Book', 2, [
+    { id: 1, title: 'The Bible' },
+    { id:2, title: 'The Quran' }
+  ])
+});
+afterEach(async () => {
+  await factory.cleanUp()
+})
+
 
 describe('GET /api/v1/books', () => {
-  before(async () => {
+  beforeEach(async () => {
     response = await request.get('/api/v1/books')
   })
 
@@ -25,7 +35,8 @@ describe('GET /api/v1/books', () => {
   
   it('respond with a collection of books', () => {
     const expectedBody = {
-      books: [{ title: 'The Bible' }, { title: 'The Quran' }],
+      books: [
+        {id: 1, title: 'The Bible' }, { id: 2, title: 'The Quran' }],
     }
     expect(jsonResponse(response)).to.equal(JSON.stringify(expectedBody))
 
