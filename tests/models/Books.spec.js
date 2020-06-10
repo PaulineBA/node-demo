@@ -33,7 +33,7 @@ describe("Book", () => {
     it("rejects empty string", async () => {
       try {
         await factory.create("Book", {
-          title: null
+          title: ""
         });
         expect.fail();
       } catch (error) {
