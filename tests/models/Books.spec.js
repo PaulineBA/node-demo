@@ -13,8 +13,9 @@ describe("Book", () => {
   const DescribedModel = Book(sequelize, dataTypes);
   const subject = new DescribedModel();
 
-  checkModelName(DescribedModel)("Book");
-  checkPropertyExists(subject)("title");
+  checkModelName(DescribedModel)('Book');
+  checkPropertyExists(subject)('title');
+  
 
   describe("constraints", () => {
     it("rejects null value for title", async () => {
