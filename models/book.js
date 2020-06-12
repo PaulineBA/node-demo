@@ -8,14 +8,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       
         validate: {
-          notEmpty: { args: true, msg: 'You need to set a title!' }
+          notEmpty: { msg: 'You need to set a title!' }
         }
       }
     },
     {}
   );
   Book.associate = (models) => {
-    Book.belongsTo(models.Author)
+    Book.belongsTo(models.Author,{foreignKey: "authorId", as: "author"})
   };
   return Book;
 };
