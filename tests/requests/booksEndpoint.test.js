@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const { expect, factory } = require('../test_helper')
 const jsonResponse = require('../jsonResponse')
 
-let server, request, response
+let server, request, response, token
 
 before((done) => {
   server = app.listen(done)
@@ -32,17 +32,39 @@ describe('GET /api/v1/books', () => {
     response = await request.get('/api/v1/books')
   })
 
-  it('respond with status 200', () => {
-    expect(response.status).to.equal(200)
-  })
-  
-  it('respond with a collection of books', () => {
-    const expectedBody = {
-      books: [
-        { id: 1, title: 'The Bible', author: { name: "Gabriel"} },
-        { id: 2, title: 'The Quran', author: { name: "Gabriel"} }],
-    }
-    expect(jsonResponse(response)).to.equal(JSON.stringify(expectedBody))
+  describe('for not authenticated user', () => {
+    beforeEach(async () => {
+      response = await request.get('/api/v1/books')
+    })
+    it('should respond with 401', () => {
+      expect(response.status).to.equal(401)
+    })
 
+  })
+
+  describe.only('for authenticated user', () => {
+    beforeEach(async () => {
+      await request
+        .post('/api/v1/auth/login')
+        .send({ email: 'user@random.com', password: 'password' })
+        .then((response) => {
+          token = response.body.token
+        })
+    
+      response = await request.get('/api/v1/books').set('Authorization', token)
+    })
+    it('respond with 200', () => {
+      expect(response.status).to.equal(200)
+    })
+  
+    it('respond with a collection of books', () => {
+      const expectedBody = {
+        books: [
+          { id: 1, title: 'The Bible', author: { name: "Gabriel" } },
+          { id: 2, title: 'The Quran', author: { name: "Gabriel" } }],
+      }
+      expect(jsonResponse(response)).to.equal(JSON.stringify(expectedBody))
+
+    })
   })
 })
